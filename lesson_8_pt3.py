@@ -10,8 +10,12 @@ width,height=150,150
 facedetect=cv2.CascadeClassifier(file)
 camera=cv2.VideoCapture(0)
 count=1
+print('startingcapture')
 while count<21:
     value,img=camera.read()
+    if not value:
+        print('camera error')
+        break
     greyimg=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     face=facedetect.detectMultiScale(greyimg,1.3,4)
     for (x,y,w,h) in face:
@@ -19,7 +23,8 @@ while count<21:
         myface=greyimg[y:y+h,x:x+w]
         myresizeface=cv2.resize(myface,(width,height))
         cv2.imwrite('%s/%s.png'%(path,count),myresizeface)
-    count+=1
+        print('successfuly saved image')
+        count+=1
     cv2.imshow('face detection',img)
     k=cv2.waitKey(10)
     if k==27:
